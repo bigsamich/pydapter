@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  redis:
+    image: "redis:latest"
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  jupyter:
+    image: "jupyterredis:latest"
+    volumes:
+      - .:/home/jovyan/pydapter
+    ports:
+      - "8888:8888"
+    container_name: jupyter
+    depends_on:
+      - redis
+
+  insight:
+    image: "redislabs/redisinsight:latest"
+    container_name: insight
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis

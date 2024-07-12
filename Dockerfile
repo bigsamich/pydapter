@@ -1,17 +1,9 @@
-# Use the official Python 3.12 image from Docker Hub as the base image
-FROM python:3.12
-
-# Set the working directory inside the container to /app
-WORKDIR /app
+# Use the data science notebook as the base image
+FROM quay.io/jupyter/datascience-notebook  
 
 # Install the redis package 
-RUN pip install redis numpy grpcio grpcio-tools
+RUN pip install redis
 
-#COPY . .
-#COPY ../../GeneralRedisAcnetFrontend/protofiles/reqInfoReading.proto .
-
-#RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. reqInfoReading.proto
-
-# Command to run when the container starts
-# This can be changed to the command you need for your application
-CMD ["python", "--version"]
+# Retain the original entrypoint and command
+ENTRYPOINT ["tini", "-g", "--"]
+CMD ["start-notebook.py"]
